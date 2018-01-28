@@ -6,7 +6,6 @@ import Module from '../core/module';
 
 let debug = logger('quill:toolbar');
 
-
 class Toolbar extends Module {
   constructor(quill, options) {
     super(quill, options);

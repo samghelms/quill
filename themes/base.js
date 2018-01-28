@@ -116,7 +116,16 @@ BaseTheme.DEFAULTS = extend(true, {}, Theme.DEFAULTS, {
     toolbar: {
       handlers: {
         formula: function() {
-          this.quill.theme.tooltip.edit('formula');
+          let range = this.quill.getSelection(true);
+          // for some reason, insert embed doesn't like empty strings
+          let value = "\u0020"
+          if (range != null) {
+            let index = range.index + range.length;
+            this.quill.insertEmbed(index, "formula", value, Emitter.sources.USER);
+            this.quill.insertText(index+1, value, Emitter.sources.USER);
+            let [eq, ]= this.quill.getLeaf(index+1);
+            eq.enter([index, "initial"]);
+          }
         },
         image: function() {
           let fileInput = this.container.querySelector('input.ql-image[type=file]');
@@ -215,19 +224,6 @@ class BaseTooltip extends Tooltip {
       case 'video': {
         value = extractVideoUrl(value);
       } // eslint-disable-next-line no-fallthrough
-      case 'formula': {
-        if (!value) break;
-        let range = this.quill.getSelection(true);
-        if (range != null) {
-          let index = range.index + range.length;
-          this.quill.insertEmbed(index, this.root.getAttribute('data-mode'), value, Emitter.sources.USER);
-          if (this.root.getAttribute('data-mode') === 'formula') {
-            this.quill.insertText(index + 1, ' ', Emitter.sources.USER);
-          }
-          this.quill.setSelection(index + 2, Emitter.sources.USER);
-        }
-        break;
-      }
       default:
     }
     this.textbox.value = '';

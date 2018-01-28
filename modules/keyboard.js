@@ -320,13 +320,13 @@ function makeEmbedArrowHandler(key, shiftKey) {
         if (shiftKey) {
           this.quill.setSelection(range.index - 1, range.length + 1, Quill.sources.USER);
         } else {
-          this.quill.setSelection(range.index - 1, Quill.sources.USER);
+          leaf.enter([range.index - 1, range.length + 1, Quill.sources.USER])
         }
       } else {
         if (shiftKey) {
           this.quill.setSelection(range.index, range.length + 1, Quill.sources.USER);
         } else {
-          this.quill.setSelection(range.index + range.length + 1, Quill.sources.USER);
+          leaf.enter([range.index + 1, range.length, Quill.sources.USER])
         }
       }
       return false;

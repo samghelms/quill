@@ -64,6 +64,10 @@ class Embed extends Parchment.Embed {
     return range;
   }
 
+  enter(quill, args) {
+    quill.setSelection(...args)
+  }
+
   update(mutations, context) {
     mutations.forEach((mutation) => {
       if (mutation.type === 'characterData' &&
